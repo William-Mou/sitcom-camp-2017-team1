@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import telepot
@@ -16,13 +16,13 @@ from random import choice
 import json
 
 
-# In[2]:
+# In[3]:
 
 
 TOKEN = '387192003:AAHGcS6V3K29zWdhMPbK-Wy6W3VVKr3YWcQ'
 
 
-# In[3]:
+# In[4]:
 
 
 bot = telepot.Bot(TOKEN)
@@ -37,7 +37,7 @@ def print_msg(msg):
 def on_chat(msg):
     header = telepot.glance(msg, flavor="chat")
     print_msg(msg)
-
+    data=""
     if header[0] == "text":
         text = msg["text"]
         # command
@@ -48,6 +48,7 @@ def on_chat(msg):
                 text = "OK， {}\n你準備好了...... 讓我們開始記帳吧"
                 bot.sendMessage(header[2], text.format(msg["from"]["first_name"]))
                 bot.sendMessage(header[2], "記帳請依序輸入 /add +(收入)or-（支出） 金額 事件")
+                bot.sendMessage(header[2], "請輸入 /total 獲取總資產")
                 bot.sendMessage(header[2], "借款請依序輸入 /lead @欠款人 金額 事件")
                 bot.sendMessage(header[2], "查看帳本請輸入 /list 查看借貸請輸入 /ldict")
             elif command[:3] == "add":
@@ -99,18 +100,24 @@ def on_chat(msg):
             elif command == "list":
                 for i in range(len(moneydict[header[2]])):
                     bot.sendMessage(header[2],"收支帳本"+str(moneydict[header[2]][i]))
-            # /ldict @username
+                # /ldict @username
             elif command[:5] == "ldict":
                 data=command[5:].split()
                 #for i in lenddict[msg["from"]["username"]+"to"+data[0][1:]]:
                 bot.sendMessage(header[2],str(lenddict[msg["from"]["username"]+"to"+data[0][1:]]))
-                
-            
+            elif command[:5] == "total":
+                s=0
+                for i in range(len(moneydict[msg['from']['id']])):
+                    if moneydict[msg['from']['id']][i][0]=='+':
+                        s+=int(moneydict[msg['from']['id']][i][1])
+                    else:
+                        s-=int(moneydict[msg['from']['id']][i][1])
+                bot.sendMessage(header[2],"總資產："+str(s))
         # other msg
         else: 
             # 我覺得不行！
             image_url = "https://cdn.pixabay.com/photo/2016/03/22/23/45/money-1273908_960_720.jpg"
-            bot.sendPhoto(header[2], image_url)
+            bot.sendPhoto(header[1], image_url)
 '''
             # 回應按鈕
             replyKeyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -131,16 +138,4 @@ MessageLoop(bot, {
 }).run_as_thread()
 
 print('Listening ...')
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
