@@ -47,10 +47,10 @@ def on_chat(msg):
             if command == "start":
                 text = "OK， {}\n你準備好了...... 讓我們開始記帳吧"
                 bot.sendMessage(header[2], text.format(msg["from"]["first_name"]))
-                bot.sendMessage(header[2], "記帳請依序輸入 /add +(收入)or-（支出） 金額 事件")
+                bot.sendMessage(header[2], "記帳請依序輸入 /add +/- <money> <porj>")
                 bot.sendMessage(header[2], "請輸入/list查看帳本，輸入/total 獲取總資產")
-                bot.sendMessage(header[2], "借款請依序輸入 /lend @欠款人 金額 事件")
-                bot.sendMessage(header[2], "查看借貸請輸入 /ldict @username")
+                bot.sendMessage(header[2], "借款請依序輸入 /lend <@username> <money> <porj>")
+                bot.sendMessage(header[2], "查看借貸請輸入 /ldict <@username>")
                 
             elif command[:3] == "add":
                 #data=[+-,money,event]
@@ -163,10 +163,6 @@ MessageLoop(bot, {
 }).run_as_thread()
 
 print('Listening ...')
-
-
-# In[ ]:
-
 
 
 
