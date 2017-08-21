@@ -1,8 +1,8 @@
 
 # coding: utf-8
-# 
-# Created by william on 2017/8/21.
 
+# 記帳＼借款機器人
+# Created by WilliamMou on 2017/8/17.
 
 # In[1]:
 
@@ -21,23 +21,28 @@ import json
 
 # In[2]:
 
-
-TOKEN = '387192003:AAHGcS6V3K29zWdhMPbK-Wy6W3VVKr3YWcQ'
+#自行更新  #自行更新   #自行更新
+TOKEN = 'bot token' #自行更新
+#自行更新  #自行更新   #自行更新
 
 
 # In[3]:
 
 
 bot = telepot.Bot(TOKEN)
-#{chatid:[[+-,money,event],[+-,money,even],[+-,money,even]]}
+
+#資料結構：{chatid:[[+-,money,event],[+-,money,even],[+-,money,even]]}
 moneydict={}
-#{idtousername:{data:[1,]}} 0:未確認 1：確認 2：還款確認 pop:還款完成
+#資料傑{idtousername:{data:[1,]}} 0:未確認 1：確認 2：還款確認 pop:還款完成
 lenddict={}
 
+#列印訊息接收log
 def print_msg(msg):
     print(json.dumps(msg, indent=4))
-    
+
+#接收chat後執行：
 def on_chat(msg):
+    #得取基礎資料：訊息類型\聊天室總類\聊天室id
     header = telepot.glance(msg, flavor="chat")
     print_msg(msg)
     data=""
@@ -71,6 +76,7 @@ def on_chat(msg):
                         bot.sendMessage(header[2],"請符合格式ouo")
                 else:
                     bot.sendMessage(header[2],"請符合格式ouo")
+    
             elif command[:4] == "lend":
                 data=command[4:].split()
                 bot.sendMessage(header[2],"借款給 "+str(data[0])+" "+str(data[1])+"元")
